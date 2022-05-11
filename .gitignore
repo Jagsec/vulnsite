@@ -1,0 +1,5 @@
+vulnsite
+__pycache__
+interface/static/files/*
+interface/static/images/profile
+interface/secrets.py

@@ -1,0 +1,38 @@
+{% extends './base.html' %}
+{% block body %}
+<!-- In this template we render the register form -->
+<section class="container-fluid">
+    <div class="row d-flex justify-content-center align-items-center">
+        <div class="col-8 col-md-6 col-lg-4 mt-5 form-border rounded">
+            <h2 class="my-3 text-center">Register</h2>
+            <form action="/register" method="post">
+                {{ form.hidden_tag() }}
+                <div class="mb-3">
+                    {{form.username.label(class="form-label") }}
+                    {{form.username(class="form-control")}}
+                </div>
+                <div class="mb-3">
+                    {{form.password.label(class="form-label") }}
+                    <div class="input-group">
+                        {{form.password(class="form-control")}}
+                        <i id="toggler1" class="bi bi-eye-slash input-group-text"></i>
+                    </div>
+                </div>
+                <div class="mb-3">
+                    {{form.password_confirm.label(class="form-label") }}
+                    <div class="input-group">
+                        {{form.password_confirm(class="form-control")}}
+                        <i id="toggler2" class="bi bi-eye-slash input-group-text"></i>
+                    </div>
+                </div>
+                <input type="hidden" name="csrf_token" value="{{csrf_token()}}">
+                <div class="mb-3">
+                    {{form.submit(class="btn")}}
+                </div>
+            </form>
+        </div>
+    </div>
+</section>
+<!-- We use this script to toggle the hide and show for the password -->
+<script src="{{url_for('static', filename='scripts/regPassword.js')}}"></script>
+{% endblock %}

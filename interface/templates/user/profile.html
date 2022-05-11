@@ -1,0 +1,112 @@
+{% extends './base.html' %}
+{% block body %}
+<section class="container-fluid mt-2">
+    <div class="row justify-content-center">
+        <div class="col-12 col-md-8 col-sm-10">
+            <div class="card text-center mb-3">
+                <div class="row g-0">
+                    <div class="col-lg-4 col-md-5 col-12">
+                        <img src="{% if user.profile_pic %}
+                        {{url_for('static', filename=user.profile_pic)}}
+                        {% else %}
+                        {{url_for('static', filename='images/default.jpg')}}
+                        {% endif %}
+                        " class="img-fluid img-thumbnail"
+                            alt="...">
+                    </div>
+                    <div class="col-lg-8 col-md-7 col-12">
+                        <div class="card-body">
+                            <h5 class="card-title">{{user.username}}</h5>
+                            <p class="card-text">{{user.profile_desc}}</p>
+                            {% if current_user.id == user.id %}
+                            <a href="{{url_for('editProfilePage', username=user.username)}}" class="btn">Update info</a>
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row justify-content-center">
+        <div class="col-md-10 col-12">
+            <div class="row justify-content-center">
+                <div class="col-12 col-sm-10 col-md-8 col-lg-6 mb-3">
+                    <div class="card text-center">
+                        <div class="card-header">
+                            Cleared Challenges
+                        </div>
+                        <div class="card-body">
+                            <table class="table table-striped">
+                                <thead>
+                                    <tr>
+                                        <th scope="col">Category</th>
+                                        <th scope="col">Name</th>
+                                        <th scope="col">Score</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {% for challenge in challenges %}
+                                    <tr>
+                                        <th scope="row">{{challenge.category}}</th>
+                                        <td><a href="{{url_for('detailPage', id=challenge.id)}}">{{challenge.name}}</a></td>
+                                        <td>{{challenge.score}}</td>
+                                    </tr>
+                                    {% endfor %}
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-12 col-sm-10 col-md-8 col-lg-6">
+                    <div class="card text-center">
+                        <div class="card-header">
+                            Ranking
+                        </div>
+                        <div class="card-body">
+                            <table class="table table-striped">
+                                <thead>
+                                    <tr>
+                                        <th scope="col">Position</th>
+                                        <th scope="col">Name</th>
+                                        <th scope="col">Score</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {% if user_scores.index(user) > 4 %}
+                                    {% for index in range(4) %}
+                                    <tr>
+                                        <td>{{index+1}}</td>
+                                        <td><a href="{{url_for('profilePage', username=user_scores[index].username)}}">{{user_scores[index].username}}</a></td>
+                                        <td>{{user_scores[index].score}}</td>
+                                    </tr>
+                                    {% endfor %}
+                                    <tr class="table-primary">
+                                        <td>{{user_scores.index(user)+1}}</td>
+                                        <td>{{user.username}}</td>
+                                        <td>{{user.score}}</td>
+                                    </tr>
+                                    {% else %}
+                                    {% for index in range(5) %}
+                                    <tr {% if user_scores[index].id == user.id %}
+                                        class="table-primary"
+                                        {% endif %}>
+                                        <td >{{index+1}}</td>
+                                        <td><a href="{{url_for('profilePage', username=user_scores[index].username)}}">{{user_scores[index].username}}</a></td>
+                                        <td>{{user_scores[index].score}}</td>
+                                    </tr>
+                                    {% endfor %}
+                                    {% endif %}
+
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+
+        </div>
+    </div>
+</section>
+
+{% endblock %}

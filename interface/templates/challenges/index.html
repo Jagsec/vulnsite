@@ -1,0 +1,45 @@
+{% extends 'base.html' %}
+{% block body %}
+<!-- In this template we render all the challenges availables to the users -->
+<div class="container-fluid">
+    <h1 class="">Challenges</h1>
+    <div class="row align items-center mb-3">
+        <div class="col-lg-4 col-md-5 col-sm-7 col-12">
+            <!-- We render this form to allow the user to filter the challenges by category -->
+            <form action="/challenges" method="post">
+                <div class="input-group">
+                    {{ form.hidden_tag() }}
+                    {{form.category.label(class="form-label mx-1 pt-2")}}
+                    {{form.category(class="form-control rounded")}}
+                    <input type="hidden" name="csrf_token" value="{{csrf_token()}}">
+                    {{form.submit(class="btn")}}
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- We loop over all the challenges and create a card with it's name, points and details button -->
+    <div class="row ">
+        {% for challenge in challenges%}
+        <div class="col-sm-6 col-md-4 col-lg-3">
+            <div class="card mb-3 fade-in {% if challenge.id in cleared_challenges %}
+                cleared_challenge
+            {% endif %}">
+                <div class="card-header">
+                    Category: {{challenge.category.capitalize()}}       
+                </div>
+                
+                <img src="{{url_for('static', filename='images/'+challenge.category+'.png')}}" class="p-2 img-thumbnail" alt="...">
+                <div class="card-body">
+                    <h5 class="card-title">{{challenge.name.capitalize()}}</h5>
+                    <p class="card-text">Points: {{challenge.score}}</p>
+                    <a href="{{url_for('detailPage', id=challenge.id)}}" class="btn">Details</a>
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+</div>
+<!-- We use this script to give a fade in effect to the challenge cards -->
+<script src="{{url_for('static', filename='scripts/fade.js')}}"></script>
+{% endblock %}

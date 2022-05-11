@@ -1,0 +1,33 @@
+{% extends './base.html' %}
+{% block body %}
+<!-- In this template we render the login form -->
+<section class="container-fluid">
+    <div class="row d-flex justify-content-center">
+        <div class="col-8 col-md-6 col-lg-4 mt-5 form-border rounded">
+            <h2 class="my-3 text-center">Log in</h2>
+            <form action="/login" method="post">
+                {{ form.hidden_tag() }}
+                <div class="mb-3">
+                    {{form.username.label(class="form-label") }}
+                    {{form.username(class="form-control")}}
+                </div>
+                <div class="mb-3">
+                    {{form.password.label(class="form-label")}}
+                    <div class="input-group">
+                        {{form.password(class="form-control")}}
+                        <i class="bi bi-eye-slash input-group-text"></i>
+                    </div>
+                    
+
+                </div>
+                <input type="hidden" name="csrf_token" value="{{csrf_token()}}">
+                <div class="mb-3">
+                    {{form.submit(class="btn")}}
+                </div>
+            </form>
+        </div>
+    </div>
+</section>
+<!-- We use this script for toggler to show and hide the password -->
+<script src="{{url_for('static', filename='scripts/loginPassword.js')}}"></script>
+{% endblock %}

@@ -1,0 +1,13 @@
+{% extends 'base.html' %}
+{% block body %}
+<!-- This page renders the home page for the site -->
+<section class="container">
+    <div class="row justify-content-center align-items-center">
+        <div class="col-8 home-text text-center">
+            <img src="{{url_for('static', filename='images/hacker.jpg')}}" alt="hacker">
+            <h1>Welcome to VulnSite!</h1>
+            <p>Here you will be able to practice your hacking skills in different challenges!</p>
+        </div>
+    </div>
+</section>
+{% endblock %}

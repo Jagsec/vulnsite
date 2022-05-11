@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+<!-- This is the base template for the rest of the site -->
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- We import the bootstrap cdn, bootsrap icons cdn and our custom css -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.8.0/font/bootstrap-icons.css"
+        integrity="sha384-ejwKkLla8gPP8t2u0eQyL0Q/4ItcnyveF505U0NIobD/SMsNyXrLti6CWaD0L52l" crossorigin="anonymous">
+    <link rel="stylesheet" href="{{url_for('static', filename='styles/style.css')}}">
+    <title>Vulnsite</title>
+</head>
+
+<body>
+    <!-- We render a navbar to show some of the routes, the create challenge, show all challenges
+    log in, register and log out, depending on the state of the use -->
+    <nav class="navbar navbar-expand-md sticky-top">
+        <div class="container-fluid">
+            <a class="navbar-brand" href="{{url_for('homePage')}}">Vulnsite</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavDropdown"
+                aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+
+            <div class="collapse navbar-collapse" id="navbarNavDropdown">
+                <ul class="navbar-nav ms-auto">
+                    <!-- We check if the user is logged in to show the challenges and logout button
+                    as well as if it has admin privileges to show the create challenge button -->
+                    {% if current_user.is_authenticated %}
+                    {% if current_user.is_admin %}
+                    <li class="nav-item">
+                        <a href="{{url_for('newChallengePage')}}" class="nav-link active">Create Challenge</a>
+                    </li>
+                    {% endif %}
+                    <li class="nav-item">
+                        <a href="{{url_for('challengePage')}}" class="nav-link active">Challenges</a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="{{url_for('profilePage', username=current_user.username)}}"
+                            class="nav-link active">{{current_user.username.capitalize()}}</a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="{{url_for('logoutPage')}}" class="nav-link active">Logout</a>
+                    </li>
+                    {% else %}
+                    <!-- We render the log in and register buttons if the user isn't logged in -->
+                    <li class="nav-item">
+                        <a class="nav-link active" href="{{url_for('loginPage')}}">Log in</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link active" href="{{url_for('registerPage')}}">Register</a>
+                    </li>
+                    {% endif %}
+                </ul>
+            </div>
+        </div>
+    </nav>
+    <!-- This is where the flashed messages show on every page -->
+    <div class="container">
+        <div class="row justify-content-center mt-2">
+            <div class="col-6">
+                {% with messages = get_flashed_messages(with_categories=True)%}
+                {% if messages: %}
+                {% for category, message in messages %}
+                <div class="alert alert-{{ category }} text-center alert-dismissible fade show" role="alert">
+                    {{ message }}
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                </div>
+                {% endfor %}
+                {% endif%}
+                {% endwith %}
+            </div>
+        </div>
+    </div>
+
+
+    {% block body %}
+    {% endblock %}
+    <!-- We import the bootstrap javascript dependencies -->
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"
+        integrity="sha384-IQsoLXl5PILFhosVNubq5LC7Qb9DXgDA9i+tQ8Zj3iwWAwPtgFTxbJ8NT4GN1R8p"
+        crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.min.js"
+        integrity="sha384-cVKIPhGWiC2Al4u+LWgxfKTRIcfu0JTxR+EQDz/bgldoEyl4H0zUF0QKbrJ0EcQF"
+        crossorigin="anonymous"></script>
+
+</body>
+
+</html>

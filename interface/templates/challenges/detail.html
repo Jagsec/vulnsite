@@ -1,0 +1,51 @@
+{% extends 'base.html' %}
+{% block body %}
+<!-- In this template we render the details of each challenge and render the form for submitting the flag -->
+<div class="container-fluid">
+    <div class="row justify-content-center">
+        <div class="col-lg-4 col-md-6 col-8 text-center rounded">
+            <div class="card mt-3">
+                <div class="card-body">
+                    <!-- In the body we show the name, score and descriptions, as well as the
+                    attached file if it exist and the flag form if the challenge hasn't been cleard
+                    already -->
+                    <h3 class="card-title">{{challenge.name.capitalize()}}</h3>
+                    <p class="card-text">Score: {{challenge.score}}</p>
+                    <p class="card-text">Description: {{challenge.description}}</p>
+                    {% if challenge.file_url %}
+                    <p class="card-text">
+                        Attached file: <a href="/static/{{challenge.file_url}}">{{challenge.file_url.replace('files/',
+                            '')}}</a>
+                    </p>
+                    {% endif %}
+                    {% if not isCleared %}
+                    <form action="{{url_for('detailPage', id=challenge.id)}}" method="post">
+                        {{form.hidden_tag()}}
+                        {{form.flag.label(class="form-label")}}
+                        {{form.flag(class="form-control mb-2")}}
+                        <!-- We add a csrf token to preven cross server request forgery attacks -->
+                        <input type="hidden" name="csrf_token" value="{{csrf_token()}}">
+                        {{form.submit(class="btn")}}
+                    </form>
+                    {% endif %}
+                    <!-- We check if the user has admin privilege to render the edit and delete buttons
+                    for the challenge -->
+                    {% if current_user.is_admin %}
+                    <div class="mt-2">
+                        <a href="{{url_for('editPage', id=challenge.id)}}" class="btn">Edit</a>
+                        <form action="{{url_for('deletePage', id=challenge.id)}}" method="post" class="d-inline">
+                            <input type="hidden" name="csrf_token" value="{{csrf_token()}}">
+                            <button type="submit" class="btn btn-danger">Delete</button>
+                        </form>
+                    </div>
+                    {% endif %}
+                </div>
+                <div class="card-footer text-muted">
+                    Author: {{challenge.author}}
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock %}

@@ -1,0 +1,47 @@
+{% extends './base.html' %}
+{% block body %}
+<!-- In this template we render the edit challenge form, only admin users has access to it -->
+<section class="container-fluid">
+    <div class="row d-flex justify-content-center">
+        <div class="col-8 col-md-6 col-lg-4 my-3 rounded form-border">
+            <a href="{{url_for('detailPage', id=challenge.id)}}">&lt;&lt;Back to {{challenge.name}}</a>
+            <h2 class="my-3 text-center">Edit challenge</h2>
+            <form action="/challenges/{{challenge.id}}/edit" method="post" enctype="multipart/form-data">
+                {{ form.hidden_tag() }}
+                <div class="mb-3">
+                    {{form.name.label(class="form-label") }}
+                    {{form.name(class="form-control")}}
+                </div>
+                <div class="mb-3">
+                    {{form.category.label(class="form-label")}}
+                    {{form.category(class="form-control")}}
+                </div>
+                <div class="mb-3">
+                    {{form.description.label(class="form-label")}}
+                    {{form.description(class="form-control", cols="35", rows="8")}}
+                </div>
+                <div class="mb-3">
+                    {{form.score.label(class="form-label")}}
+                    {{form.score(class="form-control")}}
+                </div>
+                <div class="mb-3">
+                    {{form.flag.label(class="form-label")}}
+                    {{form.flag(class="form-control")}}
+                </div>
+                <div class="mb-3">
+                    {{form.file.label(class="form-label")}}
+                    {{form.file(class="form-control")}}
+                </div>
+                <div class="mb-3">
+                    {{form.delete_file.label(class="form-label")}}
+                    {{form.delete_file()}}
+                </div>
+                <input type="hidden" name="csrf_token" value="{{csrf_token()}}">
+                <div class="mb-3">
+                    {{form.submit(class="btn")}}
+                </div>
+            </form>
+        </div>
+    </div>
+</section>
+{% endblock %}
