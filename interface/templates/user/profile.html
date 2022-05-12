@@ -72,31 +72,15 @@
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    {% if user_scores.index(user) > 4 %}
-                                    {% for index in range(4) %}
-                                    <tr>
-                                        <td>{{index+1}}</td>
-                                        <td><a href="{{url_for('profilePage', username=user_scores[index].username)}}">{{user_scores[index].username}}</a></td>
-                                        <td>{{user_scores[index].score}}</td>
-                                    </tr>
-                                    {% endfor %}
-                                    <tr class="table-primary">
-                                        <td>{{user_scores.index(user)+1}}</td>
-                                        <td>{{user.username}}</td>
-                                        <td>{{user.score}}</td>
-                                    </tr>
-                                    {% else %}
-                                    {% for index in range(5) %}
-                                    <tr {% if user_scores[index].id == user.id %}
+                                    {% for u in user_scores %}
+                                    <tr {% if u.id == user.id %}
                                         class="table-primary"
                                         {% endif %}>
-                                        <td >{{index+1}}</td>
-                                        <td><a href="{{url_for('profilePage', username=user_scores[index].username)}}">{{user_scores[index].username}}</a></td>
-                                        <td>{{user_scores[index].score}}</td>
+                                        <td >{{user_scores.index(u) +1}}</td>
+                                        <td><a href="{{url_for('profilePage', username=u.username)}}">{{u.username}}</a></td>
+                                        <td>{{u.score}}</td>
                                     </tr>
                                     {% endfor %}
-                                    {% endif %}
-
                                 </tbody>
                             </table>
                         </div>
