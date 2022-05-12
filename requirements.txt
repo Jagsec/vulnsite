@@ -13,6 +13,7 @@ Jinja2==3.1.2
 MarkupSafe==2.1.1
 mysqlclient==2.1.0
 pycparser==2.21
+python-dotenv==0.20.0
 SQLAlchemy==1.4.36
 Werkzeug==2.1.2
 WTForms==3.0.1
